@@ -1,0 +1,31 @@
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Credenciais e config local — NUNCA comitar
+.env
+.env.*
+*.key
+*.pem
+
+# DeepEval: estado local, telemetria e cache.
+# O arquivo `.deepeval` (sem extensão) guarda a CONFIDENT_API_KEY se você rodar
+# `deepeval login` — por isso está ignorado.
+.deepeval
+.deepeval/
+.deepeval_cache.json
+temp_test_run_data.json
+.temp_*
+
+# Sistema operacional / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
