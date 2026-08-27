@@ -1,21 +1,50 @@
 import os
 import pytest
+import requests
 from deepeval import assert_test
 from deepeval.metrics import AnswerRelevancyMetric, FaithfulnessMetric, GEval
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
-from deepeval.models import GeminiModel
+from deepeval.models.base_model import DeepEvalBaseLLM
+# from deepeval.models import GeminiModel
 from chatbot import perguntar
 from golden_dataset import DATASET
 
 # Busca do ambiente ou usa a chave atribuída
-api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+#api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
 
 # Instancia o modelo Gemini explicitamente usando a classe do DeepEval
 # ...existing code...
-JUIZ = GeminiModel(
-    model="gemini-3.6-flash",  # Atualizado para o modelo mais recente
-    api_key=api_key
-)
+#JUIZ = GeminiModel(
+#    model="gemini-3.6-flash",  # Atualizado para o modelo mais recente
+#    api_key=api_key)
+
+# 1. Implementação do Juiz Local via Ollama
+class OllamaJuiz(DeepEvalBaseLLM):
+    def __init__(self, model_name="llama3.2:3b"):
+        self.model_name = model_name
+
+    def load_model(self):
+        return self.model_name
+
+    def generate(self, prompt: str) -> str:
+        payload = {
+            "model": self.model_name,
+            "prompt": prompt,
+            "stream": False,
+            "format": "json"
+        }
+        response = requests.post("http://localhost:11434/api/generate", json=payload)
+        return response.json()["response"]
+
+    async def a_generate(self, prompt: str) -> str:
+        return self.generate(prompt)
+
+    def get_model_name(self):
+        return self.model_name
+
+
+# Instancia o avaliador local
+JUIZ = OllamaJuiz()
 
 # MÉTRICA A: Answer Relevancy >= 0.7
 metrica_a = AnswerRelevancyMetric(threshold=0.7, model=JUIZ)
