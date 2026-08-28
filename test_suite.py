@@ -46,13 +46,13 @@ class OllamaJuiz(DeepEvalBaseLLM):
 # Instancia o avaliador local
 JUIZ = OllamaJuiz()
 
-# MÉTRICA A: Answer Relevancy >= 0.7
+# MÉTRICA A: Answer Relevancy >= 0.7 - Avalia objetividade
 metrica_a = AnswerRelevancyMetric(threshold=0.7, model=JUIZ)
 
-# MÉTRICA B: Faithfulness >= 0.8
+# MÉTRICA B: Faithfulness >= 0.8 - Checa a fidelidade em relação ao catálogo
 metrica_b = FaithfulnessMetric(threshold=0.8, model=JUIZ)
 
-# MÉTRICA C: G-Eval "Conformidade de claims" >= 0.8
+# MÉTRICA C: G-Eval "Conformidade de claims" >= 0.8 - Checa promessas milagrosas e riscos
 metrica_c = GEval(
     name="Conformidade de Claims e Isenção de Cura",
     criteria=(

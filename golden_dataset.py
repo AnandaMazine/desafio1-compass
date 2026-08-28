@@ -23,7 +23,7 @@ DATASET = [
         "context": ["Protetor Solar Hidratante FPS 50 — Essenza — R$ 89,90 — tipo_pele: seca — ingredientes: ácido hialurônico, filtros UVA/UVB"]
     },
 
-    # CATEGORIA 2: Recomendação por Perfil (Tabela de Decisão)
+    # CATEGORIA 2: Recomendação por Perfil
     {
         "id": "TC04",
         "categoria": "Recomendação por Perfil",
